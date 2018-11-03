@@ -10,16 +10,33 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingWorker;
 
 public class MiniLogicEvaMain {
 	
-	protected static JFrame frame = new JFrame("MiniLogicEva 1.1: minimalistic logic expression evaluation");
+	protected static JFrame frame = new JFrame("MiniLogicEva " + MiniLogicEvaCore.VERSION + ": minimalistic logic expression evaluation");
 	protected static JTextField formulaInput = new JTextField("(~(r -> q) -> (s <-> ~q)) || ~(r || s)");
 	protected static JButton confirmationButton = new JButton("confirm");
 
 	public static void main(String[] args) {
+		
+		SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+	        
+			@Override
+			protected Void doInBackground() throws Exception {
+				String url = MiniLogicEvaCore.getUpdateWebsite();
+				if (url != null) {
+					JOptionPane.showMessageDialog(frame, "A new version is availible at:\n " + url);
+				}
+				return null;
+			}
+			
+	    };
+	    worker.execute();
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
